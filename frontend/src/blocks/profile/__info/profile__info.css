@@ -1,0 +1,25 @@
+.profile__info {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-template-rows: 22px 48px 29px;
+  gap: 0;
+  box-sizing: border-box;
+  grid-template-areas:
+  "avatar . ."
+  "avatar name name"
+  "avatar subtitle subtitle";
+}
+
+@media screen and (max-width: 700px) {
+  .profile__info {
+    gap: 26px 0;
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: 120px 33px 14px;
+    grid-template-areas:
+    "avatar avatar"
+    "name name"
+    "subtitle subtitle";
+  }
+}

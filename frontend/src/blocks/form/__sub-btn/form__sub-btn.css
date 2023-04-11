@@ -1,0 +1,30 @@
+.form__sub-btn {
+  border: 0;
+  border-radius: 2px;
+  outline: 0;
+  background-color: black;
+  justify-self: center;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  color: #FFFFFF;
+  padding: 0;
+  box-sizing: border-box;
+  min-height: 50px;
+  cursor: pointer;
+}
+
+.form__sub-btn:hover {
+  opacity: 0.8;
+}
+
+@media screen and (max-width: 700px) {
+  .form__sub-btn {
+    font-size: 14px;
+    line-height: 17px;
+    min-height: 46px;
+  }
+}
+

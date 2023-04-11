@@ -1,0 +1,20 @@
+.profile__name {
+  display: flex;
+  grid-area: name;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+  
+}
+
+@media screen and (max-width: 700px) {
+  .profile__name {
+    display: grid;
+    justify-content: center;
+    max-width: 100%;
+    grid-template-columns: minmax(28px, 1fr) minmax(18px, min-content) 1fr;
+    grid-template-areas: 
+    ". title button";
+  }
+}

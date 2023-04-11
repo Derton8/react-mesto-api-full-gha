@@ -1,0 +1,12 @@
+.form__error {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: #FF0000;
+  min-height: 30px;
+}
+
+.form__error:last-of-type {
+  min-height: 48px;
+}

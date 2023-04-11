@@ -1,0 +1,6 @@
+.photo-grid__caption {
+  padding: 22px 15px 22px 21px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}

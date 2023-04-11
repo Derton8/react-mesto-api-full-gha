@@ -1,0 +1,41 @@
+{
+  "name": "express-mesto-gha",
+  "version": "0.0.1",
+  "description": "Проект Mesto (backend)",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npx eslint .",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Derton8/express-mesto-gha.git"
+  },
+  "author": "Danil Mysenko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Derton8/express-mesto-gha/issues"
+  },
+  "homepage": "https://github.com/Derton8/express-mesto-gha#readme",
+  "devDependencies": {
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "nodemon": "^2.0.21"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "celebrate": "^15.0.1",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
+    "express-winston": "^4.2.0",
+    "joi-objectid": "^4.0.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.0.2",
+    "validator": "^13.9.0",
+    "winston": "^3.8.2"
+  }
+}

@@ -1,0 +1,7 @@
+.photo-grid__item {
+  position: relative;
+  width: 100%;
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  margin: 0;
+}

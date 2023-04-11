@@ -1,0 +1,7 @@
+.photo-grid__container {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  justify-content: space-between;
+  align-self: flex-start;
+}
