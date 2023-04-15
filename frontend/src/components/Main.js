@@ -25,7 +25,7 @@ export default function Main(props) {
         <button className="profile__add-button" type="button" onClick={onAddPlace}></button>
       </section>
       <section className="photo-grid">
-        {cards.reverse().map((card) => (
+        {cards.map((card) => (
           <Card card={card} key={card._id} onCardClick={onCardClick} onCardLike={onCardLike} onCardDelete={onCardDelete} />
         ))}
       </section>
