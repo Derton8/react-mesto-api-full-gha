@@ -2,7 +2,7 @@ const express = require('express');
 const { celebrate, Joi } = require('celebrate');
 
 const router = express.Router();
-const { createUser, login } = require('../controllers/users');
+const { createUser, login, checkAuth } = require('../controllers/users');
 const { urlRegExp } = require('../utils/constants');
 
 router.post('/signin', celebrate({
@@ -21,5 +21,7 @@ router.post('/signup', celebrate({
     password: Joi.string().required(),
   }),
 }), createUser);
+
+router.get('/check', checkAuth);
 
 module.exports = router;

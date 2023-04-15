@@ -9,7 +9,7 @@ import ImagePopup from './ImagePopup.js';
 import AddPlacePopup from './AddPlacePopup.js';
 import { api } from '../utils/api.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
-import { Route, Routes, useNavigate} from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute.js';
 import Register from './Register.js';
 import Login from './Login.js';
@@ -30,34 +30,39 @@ export default function App() {
   const [cards, setCards] = useState([]);
   const [infoTooltipStatus, setInfoTooltipStatus] = useState('');
   const [email, setEmail] = useState('');
-  
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    const jwt = localStorage.getItem('jwt');
-    if(jwt) {
-      auth.checkAuth(jwt)
+    auth.checkAuth()
       .then((res) => {
-        setEmail(res.data.email);
-        setLogedIn(true);
-        navigate('/', {replace: true});
+        if (res.authorized) {
+          api.getUserInfo()
+            .then((res) => {
+              setEmail(res.data.email);
+              setLogedIn(true);
+              navigate('/', { replace: true });
+            })
+            .catch((err) => {
+              console.log(err);
+            })
+        }
       })
       .catch((err) => {
         console.log(err);
       })
-    }
   }, []);
 
   useEffect(() => {
-    if(loggedIn) {
+    if (loggedIn) {
       Promise.all([api.getUserInfo(), api.getCardsList()])
-      .then(([data, cards]) => {
-        setCurrentUser(data);
-        setCards(cards);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
+        .then(([user, cards]) => {
+          setCurrentUser(user.data);
+          setCards(cards.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
     }
   }, [loggedIn]);
 
@@ -69,11 +74,12 @@ export default function App() {
   function handleCardLike(card) {
     // проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some(i => i._id === currentUser._id);
-    
+
     // отправляем запрос в API и получаем обновлённые данные карточки
-    api.changeLikeCardStatus(card._id, isLiked).then((newCard) => {
+    api.changeLikeCardStatus(card._id, isLiked)
+      .then((newCard) => {
         setCards((state) => {
-          return state.map((c) => c._id === card._id ? newCard : c)
+          return state.map((c) => c._id === card._id ? newCard.data : c)
         });
       })
       .catch((err) => {
@@ -96,11 +102,11 @@ export default function App() {
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
   }
-  
+
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
   }
-  
+
   function handleAddPlaceClick() {
     setIsAddPlacePopupOpen(true);
   }
@@ -114,10 +120,10 @@ export default function App() {
     setSelectedCard({});
   }
 
-  function handleUpdateUser({name, about}) {
-    api.setUserInfo({name, about})
-      .then((data) => {
-        setCurrentUser(data);
+  function handleUpdateUser({ name, about }) {
+    api.setUserInfo({ name, about })
+      .then((user) => {
+        setCurrentUser(user.data);
         closeAllPopups();
       })
       .catch((err) => {
@@ -125,10 +131,10 @@ export default function App() {
       })
   }
 
-  function handleUpdateAvatar({link}) {
-    api.editAvatar({link})
+  function handleUpdateAvatar({ link }) {
+    api.editAvatar({ link })
       .then((data) => {
-        setCurrentUser(data);
+        setCurrentUser(data.data);
         closeAllPopups();
       })
       .catch((err) => {
@@ -136,10 +142,10 @@ export default function App() {
       })
   }
 
-  function handleAddPlace({name, link}) {
-    api.addNewCard({name, link})
+  function handleAddPlace({ name, link }) {
+    api.addNewCard({ name, link })
       .then((newCard) => {
-        setCards([newCard, ...cards]); 
+        setCards([newCard.data, ...cards]);
         closeAllPopups();
       })
       .catch((err) => {
@@ -152,7 +158,7 @@ export default function App() {
       .then(() => {
         setInfoTooltipStatus('success');
         setIsInfoTooltipOpen(true);
-        navigate('/sign-in' , {replace: true});
+        navigate('/sign-in', { replace: true });
       })
       .catch((err) => {
         setInfoTooltipStatus('error');
@@ -166,8 +172,7 @@ export default function App() {
       .then((res) => {
         setEmail(data.email);
         setLogedIn(true);
-        navigate('/' , {replace: true})
-        localStorage.setItem('jwt', res.token);
+        navigate('/', { replace: true });
       })
       .catch((err) => {
         setInfoTooltipStatus('error');
@@ -177,18 +182,17 @@ export default function App() {
   }
 
   function handleSignOut() {
-    localStorage.removeItem('jwt');
     setLogedIn(false);
   }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <Header email={email} onSignOut={handleSignOut}/>
+      <Header email={email} onSignOut={handleSignOut} />
       <Routes>
         <Route path="/sign-up" element={<Register onSubmit={handleRegister} />} />
         <Route path="/sign-in" element={<Login onSubmit={handleLogin} />} />
         <Route path="/" element={
-          <ProtectedRoute 
+          <ProtectedRoute
             element={Main}
             onEditProfile={handleEditProfileClick}
             onAddPlace={handleAddPlaceClick}
@@ -199,7 +203,7 @@ export default function App() {
             cards={cards}
             loggedIn={loggedIn}
           />
-        }/>
+        } />
       </Routes>
       {loggedIn && <Footer />}
       <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />

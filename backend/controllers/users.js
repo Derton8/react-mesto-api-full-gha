@@ -110,3 +110,12 @@ module.exports.login = (req, res, next) => {
       next(err);
     });
 };
+
+module.exports.checkAuth = (req, res) => {
+  const token = req.cookies.jwt;
+  if (!token) {
+    res.send({ authorized: false });
+  } else {
+    res.send({ authorized: true });
+  }
+};

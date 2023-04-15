@@ -1,4 +1,4 @@
-import {apiConfig} from './constants.js';
+import { apiConfig } from './constants.js';
 
 class Api {
 
@@ -8,7 +8,7 @@ class Api {
   }
 
   _handleCorrectResponse(response) {
-    if(response.ok) {
+    if (response.ok) {
       return response.json();
     }
     return Promise.reject(`Ошибка: ${response.status}`);
@@ -17,38 +17,42 @@ class Api {
 
   async getUserInfo() {
     const response = await fetch(`${this._url}/users/me`, {
-      headers: this._headers
+      headers: this._headers,
+      credentials: 'include',
     });
     return this._handleCorrectResponse(response);
   }
 
   async getCardsList() {
     const response = await fetch(`${this._url}/cards`, {
-      headers: this._headers
+      headers: this._headers,
+      credentials: 'include',
     });
     return this._handleCorrectResponse(response);
   }
 
-  async setUserInfo({name, about}) {
+  async setUserInfo({ name, about }) {
     const response = await fetch(`${this._url}/users/me`, {
       headers: this._headers,
       method: 'PATCH',
       body: JSON.stringify({
         name,
         about
-      })
+      }),
+      credentials: 'include',
     });
     return this._handleCorrectResponse(response);
   }
 
-  async addNewCard({name, link}) {
+  async addNewCard({ name, link }) {
     const response = await fetch(`${this._url}/cards`, {
       headers: this._headers,
       method: 'POST',
       body: JSON.stringify({
         name: name,
         link: link
-      })
+      }),
+      credentials: 'include',
     });
     return this._handleCorrectResponse(response);
   }
@@ -57,6 +61,7 @@ class Api {
     const response = await fetch(`${this._url}/cards/${cardId}`, {
       headers: this._headers,
       method: 'DELETE',
+      credentials: 'include',
     });
     return this._handleCorrectResponse(response);
   }
@@ -67,17 +72,19 @@ class Api {
     const response = await fetch(`${this._url}/cards/${cardId}/likes`, {
       headers: this._headers,
       method: method,
+      credentials: 'include',
     });
     return this._handleCorrectResponse(response);
   }
 
-  async editAvatar({link}) {
+  async editAvatar({ link }) {
     const response = await fetch(`${this._url}/users/me/avatar`, {
       headers: this._headers,
       method: 'PATCH',
       body: JSON.stringify({
         avatar: link
-      })
+      }),
+      credentials: 'include',
     });
     return this._handleCorrectResponse(response);
   }

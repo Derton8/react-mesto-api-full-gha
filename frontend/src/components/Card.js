@@ -3,18 +3,17 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
 export default function Card(props) {
 
-  const {card, onCardClick, onCardLike, onCardDelete} = props;
+  const { card, onCardClick, onCardLike, onCardDelete } = props;
 
   // Подписываемся на контекст CurrentUserContext
   const currentUser = useContext(CurrentUserContext);
 
   // Определяем, являемся ли мы владельцем текущей карточки
   const isOwn = card.owner._id === currentUser._id;
-
   // Определяем, есть ли у карточки лайк, поставленный текущим пользователем
   const isLiked = card.likes.some(user => user._id === currentUser._id);
-  const cardLikeButtonClassName = ( 
-    `photo-grid__button ${isLiked && 'photo-grid__button_active'}` 
+  const cardLikeButtonClassName = (
+    `photo-grid__button ${isLiked && 'photo-grid__button_active'}`
   );
 
   function handleClick() {
@@ -39,7 +38,7 @@ export default function Card(props) {
           <button className={cardLikeButtonClassName} type="button" onClick={handleLikeClick}></button>
           <p className="photo-grid__counter">{card.likes.length}</p>
         </div>
-      </figcaption>  
+      </figcaption>
     </figure>
   );
 }

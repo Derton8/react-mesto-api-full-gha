@@ -5,16 +5,16 @@ const NotFoundError = require('../utils/errors/not-found-err');
 
 module.exports.getCards = ((req, res, next) => {
   Card.find({})
-    .then((cards) => res.send({ data: cards }))
+    .populate(['owner', 'likes'])
+    .then((cards) => res.send({ data: cards.reverse() }))
     .catch(next);
 });
 
 module.exports.createCard = ((req, res, next) => {
   const { name, link } = req.body;
   const owner = req.user._id;
-
   Card.create({ name, link, owner })
-    .then((card) => res.send({ data: card }))
+    .then((data) => data.populate(['owner', 'likes']).then((card) => res.send({ data: card })))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные при создании карточки.'));
@@ -45,6 +45,7 @@ module.exports.likeCard = ((req, res, next) => {
   // $addToSet: добавить _id в массив, если его там нет
   Card.findByIdAndUpdate(cardId, { $addToSet: { likes: userId } }, { new: true })
     .orFail(new NotFoundError('Карточка с указанным id не найдена.'))
+    .populate(['owner', 'likes'])
     .then((card) => res.send({ data: card }))
     .catch(next);
 });
@@ -55,6 +56,7 @@ module.exports.dislikeCard = ((req, res, next) => {
   // $pull: убрать _id из массива
   Card.findByIdAndUpdate(cardId, { $pull: { likes: userId } }, { new: true })
     .orFail(new NotFoundError('Карточка с указанным id не найдена.'))
+    .populate(['owner', 'likes'])
     .then((card) => res.send({ data: card }))
     .catch(next);
 });
