@@ -1,7 +1,9 @@
 const allowedCors = [
   'http://localhost:3001',
   'http://front.mesto.nomoredomains.monster',
+  'http://158.160.24.26',
   'https://front.mesto.nomoredomains.monster',
+  'https://158.160.24.26',
 ];
 
 module.exports = (req, res, next) => {

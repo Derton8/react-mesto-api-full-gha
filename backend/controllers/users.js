@@ -7,6 +7,8 @@ const ConflictError = require('../utils/errors/conflict-err');
 const NotFoundError = require('../utils/errors/not-found-err');
 const UnauthorizedError = require('../utils/errors/unauthorized-err');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then((users) => res.send({ data: users }))
@@ -91,7 +93,7 @@ module.exports.login = (req, res, next) => {
     .then(async (user) => {
       const matched = await bcrypt.compare(password, user.password);
       if (matched) {
-        const token = jwt.sign({ _id: user._id }, 'MY_SECRET_KEY');
+        const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
         res
           .cookie('jwt', token, {
             maxAge: 7 * 24 * 3600000,
