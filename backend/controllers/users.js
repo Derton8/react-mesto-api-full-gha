@@ -110,13 +110,7 @@ module.exports.login = (req, res, next) => {
         next(new UnauthorizedError('Неправильные почта или пароль.'));
       }
     })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequestError('Переданы некорректные данные при авторизации пользователя.'));
-        return;
-      }
-      next(err);
-    });
+    .catch(next);
 };
 
 module.exports.checkAuth = (req, res) => {
