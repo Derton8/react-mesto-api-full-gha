@@ -1,4 +1,3 @@
-[![Tests](https://github.com/Derton8/react-mesto-api-full-gha/actions/workflows/tests.yml/badge.svg)](https://github.com/Derton8/react-mesto-api-full-gha/actions/workflows/tests.yml)
 <h1 align="center">Проект: Mesto</h1>
 
 <div align="center">
